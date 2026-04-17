@@ -31,7 +31,7 @@ buildkit:
         --export-cache type=registry,ref=$CACHE_IMAGE \
         --import-cache type=registry,ref=$CACHE_IMAGE \
         --opt platform=linux/amd64 \
-        --output type=image,"name=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA,$CI_REGISTRY_IMAGE:latest",push=true
+        --output type=image,\"name=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA,$CI_REGISTRY_IMAGE:latest\",push=true
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
