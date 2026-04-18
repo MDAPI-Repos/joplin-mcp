@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     nodejs npm curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install supergateway globally
+# Install supergateway globally (v7+ required for streamableHttp transport)
 RUN npm install -g supergateway
 
 WORKDIR /app
@@ -25,7 +25,7 @@ RUN pip install --no-cache-dir \
 
 EXPOSE 8080
 
-# supergateway wraps the stdio MCP server and exposes it as SSE on :8080
-# --oauth2Bearer is set at runtime via MCP_AUTH_TOKEN env var passed through CMD
-ENTRYPOINT ["supergateway", "--port", "8080", "--outputTransport", "sse", \
+# streamableHttp transport: stateless per-request, endpoint at POST /mcp
+# Replaces sse which crashed on second concurrent connection.
+ENTRYPOINT ["supergateway", "--port", "8080", "--outputTransport", "streamableHttp", \
             "--stdio", "python /app/joplin_server_mcp.py"]
